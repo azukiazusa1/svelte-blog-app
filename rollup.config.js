@@ -6,6 +6,9 @@ import { terser } from 'rollup-plugin-terser';
 import sveltePreprocess from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
 import css from 'rollup-plugin-css-only';
+import dotenv from 'dotenv'
+// import replace from '@rollup/plugin-replace';
+dotenv.config()
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -40,7 +43,10 @@ export default {
 	},
 	plugins: [
 		svelte({
-			preprocess: sveltePreprocess({ sourceMap: !production }),
+			preprocess: sveltePreprocess({ 
+				sourceMap: !production,
+				replace: [['process.env.API_KEY', JSON.stringify(process.env.API_KEY)]]
+			}),
 			compilerOptions: {
 				// enable run-time checks when not in production
 				dev: !production
